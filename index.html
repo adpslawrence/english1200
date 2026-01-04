@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>國中英語 1200 單字全能王 (防護版)</title>
+<script>
+    // --- 核心防護機制 (Anti-Copy Core) ---
+    (function() {
+        // 1. 禁用右鍵選單
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 2. 禁用常用快捷鍵 (F12, Ctrl+U, Ctrl+S, Ctrl+C, Ctrl+Shift+I 等)
+        document.addEventListener('keydown', function(e) {
+            // F12
+            if (e.keyCode == 123) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+I (開發者工具), Ctrl+Shift+J (控制台), Ctrl+Shift+C (元素選擇)
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+U (查看原始碼)
+            if (e.ctrlKey && e.keyCode == 85) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+S (存檔)
+            if (e.ctrlKey && e.keyCode == 83) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+A (全選), Ctrl+C (複製)
+            if (e.ctrlKey && (e.keyCode == 65 || e.keyCode == 67)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 3. 簡單的開發者工具干擾 (Debugger Loop)
+        // 這會讓嘗試打開控制台的人卡在斷點循環中
+        setInterval(function() {
+            var startTime = performance.now();
+            debugger;
+            var endTime = performance.now();
+            if (endTime - startTime > 100) {
+                // 偵測到開發者工具開啟
+                document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:red;font-size:2rem;font-weight:bold;">非法存取：請關閉開發者工具</div>';
+            }
+        }, 1000);
+    })();
+</script>
+<style>
+    /* --- CSS 防護層 --- */
+    :root {
+        --primary: #6c5ce7;
+        --primary-dark: #4834d4;
+        --secondary: #00cec9;
+        --bg: #dfe6e9;
+        --surface: #ffffff;
+        --text: #2d3436;
+        --text-light: #636e72;
+        --success: #00b894;
+        --error: #d63031;
+        --shadow: 0 8px 30px rgba(0,0,0,0.12);
+        --radius: 16px;
+    }
+
+    /* 全局禁止選取與拖曳 */
+    html, body {
+        -webkit-user-select: none; /* Chrome/Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+ */
+        user-select: none; /* Standard */
+        -webkit-touch-callout: none; /* iOS Safari */
+    }
+
+    img {
+        pointer-events: none; /* 禁止圖片互動 */
+        -webkit-user-drag: none; /* 禁止拖曳 */
+    }
+
+    [data-theme="dark"] {
+        --primary: #a29bfe;
+        --primary-dark: #6c5ce7;
+        --secondary: #81ecec;
+        --bg: #2d3436;
+        --surface: #353b48;
+        --text: #dfe6e9;
+        --text-light: #b2bec3;
+        --shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+        font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        padding-bottom: 80px;
+        transition: background-color 0.3s, color 0.3s;
+        overscroll-behavior-y: none; /* Prevent pull-to-refresh on mobile */
+    }
+
+    /* --- Toast Notification System (Replaces Alerts) --- */
+    #toast-container {
+        position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+        z-index: 10000; pointer-events: none; width: 90%; max-width: 400px;
+    }
+    .toast {
+        background: rgba(45, 52, 54, 0.95); color: white;
+        padding: 12px 24px; border-radius: 50px; margin-top: 10px;
+        text-align: center; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        animation: slideUp 0.3s ease-out forwards; opacity: 0;
+        backdrop-filter: blur(4px);
+    }
+    .toast.success { background: rgba(0, 184, 148, 0.95); }
+    .toast.error { background: rgba(214, 48, 49, 0.95); }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateY(-20px); } }
+
+    /* Header */
+    header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white; padding: 15px;
+        box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+        position: sticky; top: 0; z-index: 100;
+        border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+    }
+    .header-content { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .app-title { margin: 0; font-size: 1.3rem; font-weight: 800; }
+    .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+
+    /* Stats Bar */
+    .stats-bar {
+        display: flex; gap: 8px; margin-top: 10px; overflow-x: auto;
+        padding-bottom: 5px; justify-content: center;
+        scrollbar-width: none;
+    }
+    .stats-bar::-webkit-scrollbar { display: none; }
+    .stat-pill {
+        background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 15px;
+        font-size: 0.85rem; font-weight: 600; white-space: nowrap; display: flex; align-items: center;
+    }
+    .stat-pill select { background: transparent; border: none; color: white; font-weight: bold; font-size: 0.85rem; outline: none; }
+    .stat-pill select option { background: #333; color: white; }
+
+    /* Main Container */
+    .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+
+    /* Grid Menu */
+    .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; padding: 5px; }
+    .menu-card {
+        background: var(--surface); padding: 20px; border-radius: var(--radius);
+        box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s, border-color 0.2s;
+        display: flex; flex-direction: column; align-items: center; border: 2px solid transparent;
+        position: relative; overflow: hidden;
+    }
+    .menu-card:active { transform: scale(0.96); }
+    .menu-card::after {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+        transform: translateX(-100%); transition: 0.5s;
+    }
+    .menu-card:hover::after { transform: translateX(100%); }
+    .menu-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .menu-title { font-weight: 700; color: var(--text); font-size: 1rem; }
+    .badge { background: var(--error); color: white; border-radius: 10px; padding: 2px 8px; font-size: 0.75rem; position: absolute; top: 10px; right: 10px; }
+
+    /* Screens */
+    .screen {
+        display: none; background: var(--surface); border-radius: var(--radius);
+        padding: 25px; box-shadow: var(--shadow); min-height: 400px;
+        animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+    .screen.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); scale: 0.98; } to { opacity: 1; transform: translateY(0); scale: 1; } }
+
+    /* Buttons */
+    .btn {
+        padding: 12px 24px; font-size: 1rem; border: none; border-radius: 50px;
+        cursor: pointer; font-weight: bold; color: white;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.1s, filter 0.1s;
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        -webkit-user-select: none;
+    }
+    .btn:active { transform: scale(0.95); filter: brightness(0.9); }
+    .btn-main { background: var(--primary); }
+    .btn-accent { background: var(--secondary); color: #2d3436; }
+    .btn-success { background: var(--success); }
+    .btn-error { background: var(--error); }
+    .back-btn {
+        position: absolute; top: 20px; left: 20px;
+        background: rgba(178, 190, 195, 0.3); width: 40px; height: 40px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; font-size: 1.2rem; border: none; color: var(--text);
+        transition: 0.2s; z-index: 10;
+    }
+    .back-btn:hover { background: rgba(178, 190, 195, 0.5); }
+
+    /* Interactive Elements */
+    .card-area {
+        background: var(--bg); border-radius: var(--radius); padding: 30px;
+        margin: 20px 0; min-height: 200px; display: flex; flex-direction: column;
+        justify-content: center; align-items: center; cursor: pointer;
+        border: 2px solid transparent; transition: 0.2s;
+    }
+    .card-area:active { transform: scale(0.98); background: rgba(0,0,0,0.02); }
+
+    /* Dictionary */
+    .search-bar {
+        width: 100%; padding: 12px 20px; font-size: 1.1rem;
+        border: 2px solid #ddd; border-radius: 50px; margin-bottom: 15px;
+        background: var(--bg); color: var(--text); outline: none;
+        transition: border-color 0.2s;
+        /* Allow typing */
+        -webkit-user-select: text;
+        user-select: text;
+    }
+    .search-bar:focus { border-color: var(--primary); }
+    
+    /* MODIFIED: Responsive Alpha Scroll */
+    .alpha-scroll { 
+        display: flex; 
+        gap: 8px; 
+        padding: 5px; 
+        margin-bottom: 10px; 
+        /* Default (Desktop): Wrap to show all */
+        flex-wrap: wrap; 
+        justify-content: center; 
+    }
+
+    /* Mobile: Use horizontal scroll when screen < 768px */
+    @media (max-width: 768px) {
+        .alpha-scroll {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            justify-content: flex-start;
+            scrollbar-width: none; /* Firefox */
+            -webkit-overflow-scrolling: touch;
+        }
+        .alpha-scroll::-webkit-scrollbar { 
+            display: none; /* Chrome/Safari/Webkit */
+        }
+    }
+    
+    .alpha-btn {
+        min-width: 40px; height: 40px; border-radius: 12px; background: var(--bg);
+        color: var(--text); display: flex; align-items: center; justify-content: center;
+        font-weight: bold; cursor: pointer; transition: 0.2s; border: 1px solid transparent;
+        flex: 0 0 auto; /* Ensure size */
+    }
+    .alpha-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3); }
+    .dict-list { list-style: none; padding: 0; max-height: 50vh; overflow-y: auto; text-align: left; }
+    .dict-item {
+        background: var(--bg); margin-bottom: 8px; padding: 15px; border-radius: 12px;
+        display: flex; justify-content: space-between; align-items: center;
+        cursor: pointer; transition: 0.2s;
+    }
+    .dict-item:active { transform: scale(0.98); }
+    .dict-word { font-weight: 800; color: var(--primary); font-size: 1.1rem; }
+
+    /* Scramble Game */
+    .drop-zone {
+        min-height: 100px; background: var(--bg); border: 2px dashed #b2bec3;
+        border-radius: var(--radius); margin: 15px 0; padding: 15px;
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; align-content: center;
+    }
+    .word-tile {
+        background: var(--surface); padding: 8px 16px; border-radius: 8px;
+        font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        cursor: pointer; user-select: none; border: 1px solid transparent;
+        animation: popIn 0.2s;
+    }
+    .word-tile:active { background: var(--secondary); transform: scale(0.95); }
+    @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+    /* Reading */
+    .story-item {
+        background: var(--bg); padding: 20px; border-radius: 12px; margin-bottom: 10px;
+        cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+        transition: 0.2s;
+    }
+    .story-item:hover { background: rgba(0,0,0,0.05); }
+    .article-content {
+        text-align: left; line-height: 2; font-size: 1.25rem;
+        background: var(--bg); padding: 20px; border-radius: 12px;
+        max-height: 50vh; overflow-y: auto; margin-bottom: 20px;
+        -webkit-user-select: none; /* No copy text */
+        user-select: none;
+    }
+    .clickable { cursor: pointer; padding: 0 2px; border-radius: 4px; }
+    .clickable:active { background: var(--secondary); color: var(--text); }
+
+    /* Memory Game */
+    .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 20px; }
+    .memory-card {
+        aspect-ratio: 3/4; background: var(--bg); border-radius: 8px;
+        display: flex; justify-content: center; align-items: center;
+        cursor: pointer; font-weight: bold; font-size: 0.9rem; text-align: center;
+        transition: transform 0.3s, background 0.3s;
+        position: relative; overflow: hidden; border: 2px solid transparent;
+    }
+    .memory-card.flipped { background: var(--surface); border-color: var(--primary); transform: rotateY(180deg); }
+    .memory-card.matched { background: var(--success); color: white; opacity: 0; pointer-events: none; }
+    
+    /* Reward Button */
+    #rewardSection { grid-column: 1 / -1; display: none; margin-top: 15px; }
+    .reward-btn {
+        background: linear-gradient(45deg, #fd79a8, #e056fd); width: 100%; padding: 15px;
+        border-radius: 20px; font-size: 1.2rem; font-weight: bold; color: white;
+        border: none; cursor: pointer; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+    /* Overlays */
+    #gameOverlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8); z-index: 2000;
+        display: none; justify-content: center; align-items: center;
+        backdrop-filter: blur(5px);
+    }
+    .game-modal {
+        background: var(--surface); width: 90%; max-width: 400px;
+        padding: 30px; border-radius: 25px; text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    #confettiCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+</style>
+</head>
+<body data-theme="light" oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+
+<div id="toast-container"></div>
+<canvas id="confettiCanvas"></canvas>
+
+<header>
+    <div class="header-content">
+        <h1 class="app-title">英語1200單字全能王</h1>
+        <button class="theme-btn" onclick="toggleTheme()">🌓</button>
+    </div>
+    
+    <div class="stats-bar">
+        <div class="stat-pill">🏆 <span id="scoreDisplay">0</span></div>
+        <div class="stat-pill">📚 <span id="wordCountDisplay">1200</span> 字</div>
+        <div class="stat-pill">
+            📊 
+            <select id="levelSelect" onchange="changeLevel()">
+                <option value="0">全部</option>
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+            </select>
+        </div>
+        <div class="stat-pill">🐢 語速 <input type="range" id="speedRange" min="0.5" max="1.0" step="0.1" value="0.8"></div>
+    </div>
+</header>
+
+<div class="container">
+    <!-- 主選單 -->
+    <div id="homeScreen" class="grid-menu">
+        <div class="menu-card" onclick="startMode('practice')">
+            <span class="menu-icon">📇</span>
+            <span class="menu-title">單字練習</span>
+        </div>
+        <div class="menu-card" onclick="startMode('dict')">
+            <span class="menu-icon">🔍</span>
+            <span class="menu-title">單字字典</span>
+        </div>
+        <div class="menu-card" onclick="startMode('listen')">
+            <span class="menu-icon">👂</span>
+            <span class="menu-title">聽力測驗</span>
+        </div>
+        <div class="menu-card" onclick="startMode('speak')">
+            <span class="menu-icon">🗣️</span>
+            <span class="menu-title">口說挑戰</span>
+        </div>
+        <div class="menu-card" onclick="startMode('read')">
+            <span class="menu-icon">📖</span>
+            <span class="menu-title">短文閱讀</span>
+        </div>
+        <div class="menu-card" onclick="startMode('scramble')">
+            <span class="menu-icon">🧩</span>
+            <span class="menu-title">句子重組</span>
+        </div>
+        <div class="menu-card" onclick="startMode('mistake')" style="border-color:var(--error);">
+            <span class="menu-icon">📕</span>
+            <span class="menu-title">錯題複習 <span id="mistakeBadge" class="badge" style="display:none;">0</span></span>
+        </div>
+
+        <div id="rewardSection">
+            <button class="reward-btn" onclick="openRandomGame()">🎁 獎勵時間！(點擊遊玩)</button>
+        </div>
+    </div>
+
+    <!-- 0. 字典 -->
+    <div id="dictScreen" class="screen">
+        <button class="back-btn" onclick="goHome()">🏠</button>
+        <h2>單字小字典</h2>
+        <input type="text" id="dictInput" class="search-bar" placeholder="輸入單字或中文..." oninput="searchDict()">
+        <div id="alphaFilters" class="alpha-scroll"></div>
+        <ul id="dictList" class="dict-list"></ul>
+    </div>
+
+    <!-- 1. 練習 -->
+    <div id="practiceScreen" class="screen">
+        <button class="back-btn" onclick="goHome()">🏠</button>
+        <h2>單字卡</h2>
+        <div class="card-area" onclick="togglePracticeCard()">
+            <h1 id="pWord" style="font-size:3rem; color:var(--primary); margin:10px 0;">Apple</h1>
+            <div id="pHidden" style="display:none; text-align:center;">
+                <h2 id="pMean" style="color:var(--text-light);">蘋果</h2>
+                <p id="pSentence" style="color:var(--secondary); font-style:italic; margin-top:15px; font-size:1.1rem;">This is an apple.</p>
+            </div>
+            <p style="color:var(--text-light); margin-top:30px; font-size:0.9rem;">(點擊卡片翻面)</p>
+        </div>
+        <div style="display:flex; justify-content:center; gap:15px;">
+            <button class="btn btn-main" onclick="playTTS(currWord.word)">🔊 發音</button>
+            <button class="btn btn-accent" onclick="nextPractice()">下一個 ➡</button>
+        </div>
+    </div>
+
+    <!-- 2. 聽力 -->
+    <div id="listenScreen" class="screen">
+        <button class="back-btn" onclick="goHome()">🏠</button>
+        <h2>聽力測驗</h2>
+        <p>請點擊喇叭，選出正確的中文意思</p>
+        <div style="font-size:5rem; cursor:pointer; color:var(--primary); margin:20px; transition:0.2s;" onclick="playTTS(currWord.word)" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">🔊</div>
+        <div id="listenOptions" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;"></div>
+    </div>
+
+    <!-- 3. 口說 -->
+    <div id="speakScreen" class="screen">
+        <button class="back-btn" onclick="goHome()">🏠</button>
+        <h2>口說挑戰</h2>
+        
+        <!-- Mic Test -->
+        <div id="micTestZone" style="background:var(--bg); padding:20px; border-radius:15px; border:2px dashed #b2bec3;">
+            <h3 style="color:var(--text-light);">麥克風測試</h3>
+            <button id="btnTestMic" class="btn btn-main" onclick="runMicTest()">🎙️ 測試 (請說 "Hello")</button>
+            <p id="micStatus" style="margin-top:15px; font-weight:bold; height:25px;">...</p>
+            <button id="btnStartSpeakGame" class="btn btn-success" style="display:none; margin-top:15px;" onclick="confirmMicTest()">✅ 開始遊戲</button>
+        </div>
+
+        <!-- Game Zone -->
+        <div id="speakGameZone" style="display:none;">
+            <h1 id="speakWord" style="font-size:3.5rem; color:var(--primary); margin:10px 0;">Word</h1>
+            <p id="speakMean" style="font-size:1.5rem; color:var(--text-light); margin-bottom:30px;">意思</p>
+            
+            <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-main" onclick="playTTS(currWord.word)">🔊 示範</button>
+                <button id="btnSpeak" class="btn btn-error" 
+                    onmousedown="startRec(event)" onmouseup="stopRec(event)" 
+                    ontouchstart="startRec(event)" ontouchend="stopRec(event)"
+                    style="min-width:160px;">
+                    🎙️ 按住說話
+                </button>
+                <button class="btn btn-accent" onclick="initSpeak()">⏭️ 跳過</button>
+            </div>
+            <p style="margin-top:20px;">辨識結果: <span id="speakResult" style="color:var(--primary); font-weight:bold;">...</span></p>
+            <p id="speakFeedback" style="height:30px; font-weight:bold;"></p>
+        </div>
+    </div>
+
+    <!-- 4. 閱讀 -->
+    <div id="readScreen" class="screen">
+        <button class="back-btn" onclick="goHome()">🏠</button>
+        <h2>短文閱讀</h2>
+        
+        <div class="category-nav">
+            <button class="cat-btn" onclick="selectCategory('family')" style="margin:2px;">家庭</button>
+            <button class="cat-btn" onclick="selectCategory('travel')" style="margin:2px;">旅遊</button>
+            <button class="cat-btn" onclick="selectCategory('animals')" style="margin:2px;">動物</button>
+            <button class="cat-btn" onclick="selectCategory('school')" style="margin:2px;">學校</button>
+            <button class="cat-btn" onclick="selectCategory('food')" style="margin:2px;">食物</button>
+        </div>
+
+        <div id="storyListArea"></div>
+
+        <div id="readingArea" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <button class="btn btn-accent" onclick="backToStoryList()" style="padding:8px 15px; font-size:0.9rem;">⬅ 文章列表</button>
+                <h3 id="articleTitle" style="color:var(--primary); margin:0;">Title</h3>
+                <div style="width:80px;"></div> <!-- Spacer -->
+            </div>
+            <div id="articleContent" class="article-content"></div>
+            <div style="display:flex; justify-content:center; gap:15px;">
+                <button class="btn btn-main" onclick="readFullArticle()">🔊 朗讀全文</button>
+                <button class="btn btn-error" onclick="stopAudio()">⏹️ 停止</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 句子重組 -->
+    <div id="scrambleScreen" class="screen">
+        <button class="back-btn" onclick="goHome()">🏠</button>
+        <h2>句子重組</h2>
+        <p style="color:var(--text-light);">請點擊單字來移動位置</p>
+        <p style="font-weight:bold; color:var(--primary); margin:15px 0;">提示: <span id="scrambleHint"></span></p>
+        
+        <div class="drop-zone" id="targetZone"></div>
+        <div class="drop-zone" id="sourceZone" style="border:none;"></div>
+        
+        <div style="display:flex; justify-content:center; gap:10px; margin-top:20px;">
+            <button class="btn btn-accent" onclick="resetScramble()">↺ 重置</button>
+            <button class="btn btn-success" onclick="checkScramble()">✅ 檢查</button>
+            <button class="btn btn-main" onclick="initScramble()">⏭️ 下一題</button>
+        </div>
+    </div>
+
+    <!-- 6. 錯題複習 -->
+    <div id="mistakeScreen" class="screen">
+        <button class="back-btn" onclick="goHome()">🏠</button>
+        <h2 style="color:var(--error);">錯題複習本</h2>
+        <div id="mistakeContent"></div>
+        <div style="display:flex; justify-content:center; gap:15px; margin-top:20px;">
+            <button class="btn btn-main" onclick="playMistakeTTS()">🔊 發音</button>
+            <button class="btn btn-success" onclick="removeMistake()">✅ 我會了(移除)</button>
+            <button class="btn btn-accent" onclick="nextMistake()">下一個 ➡</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Mini Game Modal -->
+<div id="gameOverlay">
+    <div class="game-modal">
+        <h2 id="gameTitle" style="color:var(--primary);">Mini Game</h2>
+        <div id="gameBody"></div>
+        <button class="btn btn-error" onclick="closeGame()" style="margin-top:20px; width:100%;">❌ 關閉遊戲</button>
+    </div>
+</div>
+
+<script>
+// --- Data: 1200 Words (Compressed) ---
+const packedVocab = `a:一(個)|able:能夠|about:關於|above:在...上方|accident:意外|across:在...對面|act:行動|action:動作|actor:男演員|actress:女演員|actually:實際上|add:增加|address:地址|afraid:害怕|after:之後|afternoon:下午|again:再|against:對抗|age:年齡|ago:以前|agree:同意|ahead:前方|air:空氣|airplane:飛機|airport:機場|all:全部|almost:幾乎|alone:獨自|along:沿著|already:已經|also:也|although:雖然|always:總是|am:是|America:美國|American:美國人|and:和|angry:生氣|animal:動物|another:另一個|answer:答案|ant:螞蟻|any:任何|anyone:任何人|anything:任何事|apartment:公寓|appear:出現|apple:蘋果|April:四月|are:是|arm:手臂|around:周圍|arrive:到達|art:藝術|as:像|ask:問|at:在|August:八月|aunt:阿姨|autumn:秋天|away:遠離|baby:嬰兒|back:後面|bad:壞|badminton:羽球|bag:袋子|bake:烤|bakery:麵包店|ball:球|balloon:氣球|banana:香蕉|band:樂團|bank:銀行|barbecue:烤肉|base:基地|baseball:棒球|basket:籃子|basketball:籃球|bat:蝙蝠|bath:澡|bathroom:浴室|be:是|beach:海灘|bean:豆子|bear:熊|beautiful:美|because:因為|become:變成|bed:床|bedroom:臥室|bee:蜜蜂|beef:牛肉|before:之前|begin:開始|behind:後面|believe:相信|bell:鈴|belong:屬於|below:下面|belt:皮帶|bench:長椅|beside:旁邊|between:之間|bicycle:單車|big:大|bike:單車|bird:鳥|birthday:生日|bite:咬|black:黑|blackboard:黑板|blanket:毯子|blind:瞎|block:街區|blow:吹|blue:藍|boat:船|body:身體|boil:煮|book:書|bookstore:書店|bored:無聊的|boring:無聊|born:出生|borrow:借|boss:老闆|both:兩者|bottle:瓶子|bottom:底|bow:鞠躬|bowl:碗|box:盒|boy:男孩|bread:麵包|break:打破|breakfast:早餐|bridge:橋|bright:亮|bring:帶|brother:兄弟|brown:褐|brush:刷|bug:蟲|build:蓋|building:建築|bun:小圓麵包|burn:燒|bus:公車|business:生意|businessman:商人|busy:忙|but:但是|butter:奶油|butterfly:蝴蝶|buy:買|by:被|cage:籠子|cake:蛋糕|call:打電話|camera:相機|camp:露營|can:能|candle:蠟燭|candy:糖果|cap:帽|car:車|card:卡|care:關心|careful:小心|carry:帶|case:案子|castle:城堡|cat:貓|catch:抓|celebrate:慶祝|cellphone:手機|cent:分|center:中心|centimeter:公分|chair:椅|chalk:粉筆|chance:機會|change:改|cheap:便宜|cheat:作弊|check:查|cheer:歡呼|cheese:起司|chess:棋|chicken:雞|child:小孩|China:中國|Chinese:中文|chocolate:巧克力|choose:選|chopsticks:筷子|Christmas:聖誕|church:教堂|circle:圓|city:市|clap:拍手|class:班|classmate:同學|classroom:教室|clean:乾淨|clear:清|clerk:店員|climb:爬|clock:鐘|close:關|clothes:衣|cloud:雲|cloudy:多雲|club:社團|coat:外套|coffee:咖啡|Coke:可樂|cold:冷|collect:收|color:色|comb:梳|come:來|comfortable:舒服|comic:漫畫|common:常見|computer:電腦|convenient:方便|cook:煮|cookie:餅乾|cool:酷|copy:抄|corner:角|correct:對|cost:花費|couch:沙發|count:數|country:國|course:課|cousin:堂表親|cover:蓋|cow:牛|cowboy:牛仔|crazy:瘋|cross:跨|cry:哭|cup:杯|cut:切|cute:可愛|dance:舞|dangerous:危險|dark:暗|date:日期|daughter:女兒|day:天|dead:死|dear:親愛|December:12月|decide:決定|delicious:好吃|dentist:牙醫|department store:百貨|desk:桌|dictionary:字典|die:死|different:不同|difficult:難|dig:挖|dining room:飯廳|dinner:晚餐|dirty:髒|dish:盤|do:做|doctor:醫|dodge ball:躲避球|dog:狗|doll:偶|dollar:元|door:門|dot:點|down:下|dozen:打|dragon:龍|draw:畫|drawer:抽屜|dream:夢|dress:洋裝|drink:喝|drive:開車|driver:司機|drop:掉|drum:鼓|dry:乾|duck:鴨|dumpling:餃|during:期間|each:每|ear:耳|early:早|earth:地|east:東|Easter:復活節|easy:易|eat:吃|egg:蛋|eight:8|eighteen:18|eighty:80|either:任一|elementary school:小學|elephant:象|eleven:11|else:其他|email:電郵|end:末|engineer:工程師|English:英語|enjoy:享|enough:夠|enter:進|envelope:信封|eraser:擦|even:甚至|evening:晚|ever:曾|every:每|everyone:人人|everything:事事|example:例|excellent:棒|except:除|excited:興奮|exciting:刺激|excuse:藉口|exercise:運動|expensive:貴|experience:經驗|eye:眼|face:臉|fact:事實|factory:廠|fail:敗|fall:秋;跌|family:家|famous:名|fan:扇|far:遠|farm:農|farmer:農夫|fast:快|fat:胖|father:父|favorite:最愛|February:2月|feed:餵|feel:覺|festival:節|fever:燒|few:少|fifteen:15|fifty:50|fight:打|fill:填|finally:終|find:找|fine:好|finger:指|finish:完|fire:火|first:1st|fish:魚|fisherman:漁夫|five:5|fix:修|floor:地|flower:花|flute:笛|fly:飛|follow:跟|food:食|foot:腳|for:為|foreign:外國|foreigner:老外|forget:忘|fork:叉|forty:40|four:4|fourteen:14|fox:狐|free:免費|French fries:薯條|fresh:鮮|Friday:週五|friend:友|friendly:友善|frisbee:飛盤|frog:蛙|from:從|front:前|fruit:果|fry:炸|full:滿|fun:樂|funny:趣|future:未來|game:戲|garbage:垃圾|garden:園|gas:氣|gate:門|get:得|ghost:鬼|giant:巨|gift:禮|girl:女|give:給|glad:樂|glass:玻|glasses:鏡|glove:套|glue:膠|go:去|goat:羊|good:好|goodbye:拜|goose:鵝|grade:級|gram:克|grandfather:祖父|grandmother:祖母|grape:葡萄|grass:草|gray:灰|great:棒|green:綠|ground:地|group:組|grow:長|guava:芭樂|guess:猜|guest:客|guide:導|guitar:吉他|gun:槍|guy:傢伙|gym:體育館|habit:習|hair:髮|half:半|Halloween:萬聖|ham:腿|hamburger:堡|hand:手|handsome:帥|hang:掛|happen:發生|happy:樂|hard:難|hat:帽|hate:恨|have:有|he:他|head:頭|headache:頭痛|health:健|healthy:康|hear:聽|heart:心|heat:熱|heavy:重|hello:哈囉|help:幫|helpful:有益|hen:母雞|here:這|hey:嘿|hi:嗨|hide:藏|high:高|hike:行|hill:丘|hippo:河馬|history:史|hit:打|hobby:嗜好|hold:拿|holiday:假|home:家|homework:作業|honest:誠|honey:蜜|hop:跳|hope:希|horse:馬|hospital:醫|hot:熱|hot dog:熱狗|hotel:旅|hour:時|house:屋|housewife:主婦|how:怎|however:然|hundred:百|hungry:餓|hunt:獵|hurry:急|hurt:傷|husband:夫|I:我|ice:冰|ice cream:冰淇淋|idea:意|if:若|important:重|in:在|insect:蟲|inside:內|interest:趣|interested:感興趣|interesting:有趣|Internet:網|interview:訪|into:入|invite:邀|island:島|it:它|jacket:夾克|January:1月|jeans:褲|job:工|jog:跑|join:加|joy:樂|juice:汁|July:7月|jump:跳|June:6月|junior high school:國中|just:只|kangaroo:袋鼠|keep:保|key:鑰|kick:踢|kid:孩|kill:殺|kilogram:公斤|kind:類|king:王|kiss:吻|kitchen:廚|kite:箏|knee:膝|knife:刀|knock:敲|know:知|knowledge:識|koala:無尾熊|lake:湖|lamp:燈|land:地|language:語|lantern:燈籠|large:大|last:末|late:遲|later:後|laugh:笑|lawyer:師|lazy:懶|lead:領|leader:領袖|learn:學|least:少|leave:離|left:左|leg:腿|lemon:檬|lend:借|less:少|lesson:課|let:讓|letter:信|lettuce:菜|library:館|lid:蓋|lie:謊|life:命|light:光|like:像|line:線|lion:獅|lip:唇|list:單|listen:聽|little:小|live:住|living room:客廳|lonely:孤|long:長|look:看|lose:輸|loud:吵|love:愛|lovely:愛|low:低|lucky:幸|lunch:午餐|machine:機|mad:怒|magic:法|mail:信|mailman:郵差|make:做|man:男|many:多|map:圖|March:3月|mark:號|marker:筆|market:市|married:婚|mask:罩|mat:墊|math:數|matter:事|May:5月|maybe:也|meal:餐|mean:意|meat:肉|medicine:藥|medium:中|meet:遇|meeting:會|menu:單|mile:哩|milk:奶|million:百萬|mind:介|minute:分|miss:想|mistake:錯|modern:現|moment:刻|Monday:週一|money:錢|monkey:猴|month:月|moon:月|mop:把|more:更|morning:早|most:最|mother:母|motorcycle:機車|mountain:山|mouse:鼠|mouth:嘴|move:動|movie:影|Mr.:先生|Mrs.:太|MRT:捷運|Ms.:女|much:多|mud:泥|museum:館|music:樂|must:必|nail:甲|name:名|national:國|near:近|neck:頸|need:需|neighbor:鄰|never:不|new:新|news:聞|next:下|nice:好|night:夜|nine:9|nineteen:19|ninety:90|no:不|nobody:無人|nod:點頭|noise:音|noodle:麵|noon:午|north:北|nose:鼻|not:不|note:記|notebook:筆記|nothing:沒|notice:注|November:11月|now:今|number:數|nurse:護|o'clock:點|October:10月|of:的|off:離|office:辦|officer:官|often:常|oil:油|OK:好|old:老|on:上|once:一|one:1|only:只|open:開|or:或|orange:橘|order:訂|other:其|out:外|outside:外|over:過|own:自|ox:牛|pack:包|package:裹|page:頁|paint:畫|pair:雙|pants:褲|papaya:瓜|paper:紙|parent:親|park:園|part:部|party:派|pass:過|past:去|paste:貼|pay:付|PE:體育|peach:桃|pear:梨|pen:筆|pencil:鉛|people:人|perhaps:許|person:人|pet:寵|phone:電|photo:照|piano:琴|pick:挑|picnic:野|picture:圖|pie:派|piece:片|pig:豬|pin:針|pink:粉|pipe:管|pizza:披|place:地|plan:計|planet:星|plant:植|plate:盤|play:玩|player:手|playground:場|please:請|pleasure:樂|plus:加|pocket:袋|point:點|police:警|polite:禮|pond:池|pool:池|poor:窮|popcorn:爆|popular:紅|pork:肉|possible:可|post office:郵局|postcard:卡|pot:鍋|pound:磅|practice:練|pray:禱|prepare:備|present:禮|pretty:美|price:價|prince:王|princess:主|prize:獎|problem:題|program:程|proud:傲|public:公|pull:拉|pumpkin:瓜|purple:紫|push:推|put:放|quarter:刻|queen:后|question:題|quick:快|quiet:靜|quite:當|quiz:測|rabbit:兔|race:賽|radio:機|railroad:鐵|rain:雨|rainbow:虹|rainy:雨|raise:舉|rat:鼠|read:讀|ready:備|real:真|really:真|recorder:笛|red:紅|refrigerator:箱|remember:記|repeat:複|reporter:記|rest:息|restaurant:廳|restroom:廁|rice:飯|rich:富|ride:騎|right:右|ring:戒|river:河|road:路|robot:人|rock:石|roll:滾|roller skate:溜|room:房|rope:繩|rose:瑰|round:圓|row:划|rule:規|ruler:尺|run:跑|sad:傷|safe:安|sail:航|salad:拉|sale:賣|salesman:員|salt:鹽|same:同|sandwich:治|Saturday:週六|save:存|say:說|school:校|science:科|scooter:車|screen:幕|sea:海|season:季|seat:座|second:秒|secretary:秘|see:看|seed:種|seesaw:蹺|seldom:少|sell:賣|send:送|senior high school:高中|sentence:句|September:9月|serious:嚴|set:組|seven:7|seventeen:17|seventy:70|several:幾|shake:搖|shall:將|shape:狀|share:享|shark:鯊|she:她|sheep:羊|ship:船|shirt:衫|shoe:鞋|shop:店|shopkeeper:主|short:短|shorts:褲|should:應|shoulder:肩|shout:叫|show:秀|shy:羞|sick:病|side:邊|sidewalk:道|sight:視|sign:號|simple:簡|since:自|sing:唱|singer:手|sir:先生|sister:妹|sit:坐|six:6|sixteen:16|sixty:60|size:寸|skate:溜|skirt:裙|sky:天|sleep:睡|slide:滑|slim:瘦|slow:慢|small:小|smart:聰|smell:聞|smile:笑|smoke:煙|snack:食|snake:蛇|snow:雪|snowman:人|snowy:雪|so:所|soccer:足|socks:襪|sofa:發|soldier:兵|some:些|someone:人|something:事|sometimes:時|somewhere:處|son:兒|song:歌|soon:快|sore:痛|sorry:歉|sound:聲|soup:湯|south:南|space:空|spaghetti:麵|speak:說|special:特|spell:拼|spend:花|spider:蛛|spoon:匙|sport:運|spring:春|square:方|stairs:梯|stamp:票|stand:站|star:星|start:始|station:站|stay:留|steak:排|still:仍|stomach:胃|stop:停|store:店|story:故|straight:直|strange:怪|stranger:人|strawberry:莓|street:街|strong:強|student:生|study:讀|stupid:笨|subject:科|successful:成|sugar:糖|summer:夏|sun:日|Sunday:週日|sunny:晴|supermarket:市|sure:確|surf:浪|surprise:驚|surprised:驚|sweater:衣|sweet:甜|swim:泳|swing:鞦|table:桌|tail:尾|Taiwan:台|take:拿|talk:談|tall:高|tape:帶|taste:味|taxi:計|tea:茶|teach:教|teacher:師|team:隊|teenager:少|telephone:電|television:視|tell:告|temple:廟|ten:10|tennis:網|terrible:糟|test:考|than:比|thank:謝|that:那|the:這|theater:院|then:那|there:那|therefore:因此|these:這些|they:他們|thick:厚的|thief:小偷|thin:薄的|thing:事情|think:想|third:第三|thirsty:口渴的|thirteen:十三|thirty:三十|this:這個|those:那些|though:雖然|thought:思想|thousand:千|thread:線|threaten:威脅|three:三|throat:喉嚨|through:穿過|throw:丟|thumb:拇指|thunder:雷|Thursday:星期四|ticket:票|tidy:整潔的|tie:領帶|tiger:老虎|tight:緊的|till:直到|time:時間|tiny:微小的|tip:尖端|tired:累的|title:標題|to:去|toast:吐司|today:今天|toe:腳趾|tofu:豆腐|together:一起|toilet:廁所|tomato:番茄|tomorrow:明天|tongue:舌頭|tonight:今晚|too:太|tool:工具|tooth:牙齒|toothache:牙痛|toothbrush:牙刷|top:頂端|topic:主題|total:總計|touch:碰觸|tough:堅韌的|tour:旅遊|tourist:遊客|toward:向|towel:毛巾|tower:塔|town:城鎮|toy:玩具|trace:蹤跡|track:軌道|trade:貿易|tradition:傳統|traditional:傳統的|traffic:交通|train:火車|trap:陷阱|trash:垃圾|travel:旅行|treasure:寶藏|treat:請客|tree:樹|triangle:三角形|trick:把戲|trip:旅行|trouble:麻煩|trousers:褲子|truck:卡車|true:真實的|trumpet:喇叭|trust:信任|truth:事實|try:嘗試|T-shirt:T恤|tub:浴缸|Tuesday:星期二|tunnel:隧道|turkey:火雞|turn:轉|turtle:烏龜|twelve:十二|twenty:二十|twice:兩次|twin:雙胞胎|two:二|type:打字|typewriter:打字機|typhoon:颱風|ugly:醜陋的|umbrella:雨傘|uncle:叔叔|under:在...之下|underline:畫底線|underpass:地下道|understand:了解|underwear:內衣|unhappy:不快樂的|uniform:制服|unique:獨特的|unit:單位|universe:宇宙|university:大學|until:直到|up:向上|upon:在...之上|upper:上面的|upstairs:在樓上|USA:美國|use:使用|useful:有用的|usual:通常的|usually:通常|vacation:假期|valley:山谷|valuable:貴重的|value:價值|vegetable:蔬菜|vendor:小販|very:非常|vest:背心|victory:勝利|video:影片|view:景色|village:村莊|vinegar:醋|violin:小提琴|visit:拜訪|visitor:訪客|vocabulary:字彙|voice:聲音|volleyball:排球|vote:投票|waist:腰|wait:等待|waiter:男服務生|waitress:女服務生|wake:醒來|walk:走路|walkman:隨身聽|wall:牆|wallet:錢包|want:想要|war:戰爭|warm:溫暖的|warn:警告|wash:洗|waste:浪費|watch:手錶|water:水|waterfall:瀑布|watermelon:西瓜|wave:波浪|way:路|we:我們|weak:虛弱的|wealth:財富|wealthy:富有的|weapon:武器|wear:穿|weather:天氣|wedding:婚禮|Wednesday:星期三|week:週|weekday:平日|weekend:週末|weekly:每週的|weigh:稱重|weight:重量|welcome:歡迎|well:好地|west:西方|western:西方的|wet:濕的|whale:鯨魚|what:什麼|wheel:輪子|when:何時|where:哪裡|whether:是否|which:哪一個|while:當...時候|white:白色的|who:誰|whole:全部的|whose:誰的|why:為什麼|wide:寬的|wife:妻子|wild:野生的|will:將|win:贏|wind:風|window:窗戶|windy:多風的|wing:翅膀|winner:贏家|winter:冬天|wire:金屬線|wise:聰明的|wish:希望|with:和|within:在...之內|without:沒有|wolf:狼|woman:女人|wonder:想知道|wonderful:美好的|wood:木頭|wooden:木製的|wool:羊毛|word:字|work:工作|workbook:作業本|worker:工人|world:世界|worm:蟲|worry:擔心|wound:受傷|wrist:手腕|write:寫|writer:作家|wrong:錯誤的|yard:庭院|year:年|yell:吼叫|yellow:黃色的|yes:是|yesterday:昨天|yet:尚未|you:你|young:年輕的|youth:青春|yummy:好吃的|zebra:斑馬|zero:零|zoo:動物園`;
+
+// 擴充閱讀教材 (每類 5 篇)
+const storyData = {
+    family: [
+        { title: "My Wonderful Family", desc: "我的美好家庭", text: "I live in a happy family with four members. My father is a police officer. He is tall, strong, and very brave. My mother is a junior high school teacher. She is beautiful and kind. She loves to cook delicious dinner for us every evening. We live in a comfortable apartment at 101 Park Road. On weekends, we like to watch movies, play cards, and clean the house together." },
+        { title: "Grandma's Country House", desc: "祖母的鄉間小屋", text: "Every summer vacation, I go to my grandmother's house in the country. It is a small but old house near a river. Grandma has a big garden with many beautiful flowers and trees. She also keeps three fat cats and two smart dogs. In the morning, I help her feed the animals. In the afternoon, she makes sweet apple pies and hot tea for me. We sit under the tree and tell stories." },
+        { title: "A Weekend Picnic", desc: "週末野餐趣", text: "On Sunday, my family went to the park for a picnic. My mother prepared sandwiches and fruit juice. My father brought a big mat and a frisbee. My sister and I played badminton on the grass. The weather was sunny and warm. We ate lunch under a tall tree. A cute squirrel came to our mat to look for food. We gave it some bread. It was a relaxing and happy weekend." },
+        { title: "Helping at Home", desc: "幫忙做家事", text: "My parents work very hard every day. So, I try to help them with housework. On weekends, I clean my bedroom and wash the dishes after dinner. My brother sweeps the floor and takes out the trash. Sometimes, we wash our father's car together. Working together makes the work easy and fast. My mother says we are good helpers. Seeing their smiles makes me feel proud and happy." },
+        { title: "Father's New Job", desc: "父親的新工作", text: "My father got a new job last month. He is now a manager in a computer company. He is very busy and often comes home late. However, he always finds time to talk to us. He asks about our school life and homework. On Sundays, he puts away his cellphone and plays basketball with me. Although he is tired, he cares about us very much. I want to be a hardworking man like him." }
+    ],
+    travel: [
+        { title: "A Trip to Taipei 101", desc: "台北 101 之旅", text: "Last Saturday, my friends and I took a train to Taipei. It was a sunny day. We visited the famous Taipei 101 building. It is a very tall building with 101 floors. We went up to the top floor by a fast elevator. The view was excellent! We could see the whole city clearly. Later, we went to a famous restaurant, Din Tai Fung, to eat dumplings. The food was yummy, but the price was a little expensive." },
+        { title: "Summer Beach Fun", desc: "夏日海灘樂趣", text: "It is very hot in July and August in Taiwan. The temperature is often about 35 degrees Celsius. My favorite activity is going to the beach. I wear my swimsuit and sunglasses. I like to swim in the cool water and look at the colorful fish. Sometimes, I build a sandcastle with my brother. We also play frisbee on the beach. When the sun goes down, we watch the beautiful sunset." },
+        { title: "Camping in the Mountains", desc: "山中露營", text: "Last summer, my uncle took us camping in the high mountains. We drove for three hours to get there. The air was fresh and cool. We set up a big tent near a clear lake. At night, we made a fire and cooked barbecue. The sky was full of bright stars. I had never seen so many stars before. We slept in sleeping bags and listened to the frogs singing. It was a wonderful experience with nature." },
+        { title: "Visiting Tainan", desc: "拜訪台南古都", text: "Tainan is an old city in southern Taiwan. It has many famous temples and historic sites. I visited Anping Old Fort with my classmates. We learned a lot about the history of Taiwan. Tainan is also famous for its street food. We ate beef soup and coffin bread. They tasted amazing! The people in Tainan are very friendly. If you like history and food, Tainan is a great place to visit." },
+        { title: "A Trip to the Museum", desc: "博物館之旅", text: "Our teacher took us to the National Palace Museum in Taipei. It is a very large museum with many treasures. We saw the Jadeite Cabbage and the Meat-shaped Stone. They looked so real and beautiful. The guide told us interesting stories about these treasures. We walked for two hours and saw many old paintings and pots. I learned that art is very important for our culture." }
+    ],
+    animals: [
+        { title: "A Day at the Zoo", desc: "動物園的一天", text: "Yesterday, our class visited the city zoo. It is a big place with over 1200 animals. First, we saw the elephants. The elephant has a long trunk and big ears. It is very heavy. Next, we saw the lions. The lion is the king of animals. It has a loud voice that sounds scary. We also watched the monkeys jump between trees. They are funny and smart. I learned a lot about animals. It was an interesting trip." },
+        { title: "My Best Friend Lucky", desc: "我最好的朋友 Lucky", text: "I have a pet dog. His name is Lucky. He is a golden retriever with long yellow hair. Lucky is very friendly to people. Every day after school, he waits for me at the door. I take him for a walk in the park. He likes to run fast and catch a ball. He also likes to eat beef and chicken. When I am sad, he sits beside me quietly. Lucky is not just a pet; he is my best friend." },
+        { title: "The Smart Dolphin", desc: "聰明的海豚", text: "Dolphins are very smart sea animals. They live in groups and help each other. I saw a dolphin show at the ocean park. The dolphins could jump high out of the water and catch a ball. They could also count numbers and sing songs. The trainer said dolphins are friendly to humans. Sometimes they save people in the sea. I think we should protect the ocean and let dolphins live happily." },
+        { title: "Rabbits in the Garden", desc: "花園裡的兔子", text: "My neighbor has two white rabbits. They have long ears and red eyes. They live in a small house in the garden. I like to feed them carrots and vegetables. When they eat, their mouths move very fast. It is very funny. Rabbits are quiet animals, but they can jump very fast. Sometimes I let them run on the grass. Touching their soft hair makes me feel relaxed." },
+        { title: "The King of the Forest", desc: "森林之王", text: "Tigers are strong and dangerous animals. They live in the forest and hunt for food at night. A tiger has orange fur with black stripes. It helps them hide in the tall grass. Tigers are good swimmers and can climb trees. They usually live alone. Many people are afraid of tigers, but I think they are beautiful. Sadly, there are fewer tigers in the world now. We must save them." }
+    ],
+    school: [
+        { title: "My School Life", desc: "我的學校生活", text: "I am a junior high school student. My school is big and modern. There are 25 classrooms, a library, and a gym. I go to school at 7:30 in the morning. My favorite subject is English because the teacher is nice and funny. During the break, I play basketball with my classmates on the playground. Sometimes we go to the library to read books. I study hard every day because I want to be a doctor in the future." },
+        { title: "Music Class", desc: "音樂課的樂趣", text: "Today we had a special music class. The teacher brought a guitar and a violin to the classroom. She played a beautiful song for us. Then, she taught us how to sing an English song. Everyone opened their mouths and sang loudly. I felt a little shy at first, but later I enjoyed it. Music makes people feel happy and relaxed. I hope we can have more music classes like this." },
+        { title: "Sports Day", desc: "運動會", text: "Yesterday was our school's Sports Day. Every class wore different colored T-shirts. I ran in the 100-meter race. My classmates cheered for me loudly. I ran as fast as I could and won second place. We also had a relay race and a tug-of-war. Everyone tried their best for their class. Although we were tired and sweaty, we felt very happy. Sports Day teaches us about teamwork and never giving up." },
+        { title: "My Favorite Library", desc: "我最愛的圖書館", text: "The school library is my favorite place. It is quiet and bright. There are thousands of books on the shelves. I like to go there during lunch break. I usually read books about science and history. The librarian is a kind lady. She helps me find good books to read. Reading books allows me to travel to different worlds and learn new things. I think reading is a good habit for everyone." },
+        { title: "Cleaning Time", desc: "打掃時間", text: "Every day at 3 pm, it is cleaning time at our school. All students work together to clean the campus. Some students sweep the floor in the classroom. Others clean the windows and the blackboard. My job is to wipe the desks and arrange the chairs. We want to keep our school clean and tidy. A clean environment helps us learn better. I am happy to do my part for the school." }
+    ],
+    food: [
+        { title: "Making a Birthday Cake", desc: "製作生日蛋糕", text: "Today is my mother's birthday. My father and I decided to make a cake for her. First, we bought flour, sugar, and butter from the supermarket. Then, we mixed 3 eggs and 2 cups of milk in a bowl. We baked the cake in the oven for 40 minutes. It smelled very good! Finally, we put some fresh strawberries and cream on top. Mother was very surprised and happy. The cake tasted sweet and delicious." },
+        { title: "Lunch Time", desc: "午餐時光", text: "It is 12 o'clock. It is time for lunch. I am very hungry. Today's lunch is rice with pork and vegetables. The pork is salty but tasty. The cabbage is fresh and green. I also have a bowl of corn soup. It is hot and sweet. After the meal, I eat a guava as fruit. Eating healthy food is important for our body. I finish everything on my plate. I am full and ready for the afternoon class." },
+        { title: "Night Market Food", desc: "夜市美食", text: "Taiwan is famous for its night markets. There are many kinds of delicious food there. Last night, I went to the Shilin Night Market. I ate a large fried chicken steak. It was crispy and juicy. Then I drank a cup of bubble milk tea. The pearls were sweet and chewy. I also tried stinky tofu. It smelled strong but tasted good. Night markets are the best place to enjoy Taiwanese food." },
+        { title: "Healthy Breakfast", desc: "健康早餐", text: "Breakfast is the most important meal of the day. My mother always prepares a healthy breakfast for me. Usually, I have a glass of milk and an egg. Sometimes I eat toast with cheese and ham. Eating a good breakfast gives me energy to study and play. If I don't eat breakfast, I feel tired and cannot focus in class. I love eating breakfast with my family every morning." },
+        { title: "Fruit in Taiwan", desc: "台灣的水果", text: "Taiwan has many delicious fruits. In summer, we have sweet watermelons and mangoes. Mango shaved ice is my favorite dessert. In winter, we have strawberries and oranges. Bananas and papayas are available all year round. Fruits are rich in vitamins and good for our health. I eat fruit every day after lunch. My foreign friends also love Taiwanese fruit. They say it is the best fruit in the world." }
+    ]
+};
+
+// Global Variables
+let vocabList = [];
+let mistakeList = [];
+let score = 0;
+let unlockScore = 150;
+let rewardGamesLeft = 0;
+let currWord = null;
+let currMistakeIndex = 0;
+let currentLevel = 0; // 0=All, 1, 2, 3
+let synth = window.speechSynthesis;
+let recognition;
+let isRecognizing = false;
+
+// --- Initialization ---
+window.onload = function() {
+    initVocab();
+    initSpeechRecognition();
+    selectCategory('family');
+    updateStats();
+    initAlphaScroll();
+    initConfetti();
+    
+    // Load persisted data if needed (optional)
+    if(localStorage.getItem('mistakeList')) {
+        try { mistakeList = JSON.parse(localStorage.getItem('mistakeList')); updateMistakeBadge(); } catch(e){}
+    }
+};
+
+function initVocab() {
+    let idCounter = 1;
+    const lines = packedVocab.split('|');
+    const total = lines.length;
+    const chunkSize = Math.ceil(total / 3);
+
+    lines.forEach((item, index) => {
+        if(!item) return;
+        const parts = item.split(':');
+        if(parts.length >= 2) {
+            const w = parts[0].trim();
+            const m = parts[1].trim();
+            // Generate sentence based on word type
+            const s = makeSent(w);
+            let lvl = 1;
+            if (index > chunkSize) lvl = 2;
+            if (index > chunkSize * 2) lvl = 3;
+
+            vocabList.push({ id: idCounter++, word: w, mean: m, sentence: s, level: lvl });
+        }
+    });
+    console.log(`Loaded ${vocabList.length} words.`);
+    const countDisplay = document.getElementById('wordCountDisplay');
+    if (countDisplay) {
+        countDisplay.innerText = vocabList.length;
+    }
+}
+
+// --- Helper Functions ---
+function showToast(msg, type = 'success') {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerText = msg;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
+function playTTS(txt) {
+    if(synth.speaking) synth.cancel();
+    let u = new SpeechSynthesisUtterance(txt);
+    u.rate = document.getElementById('speedRange').value;
+    u.lang = 'en-US';
+    synth.speak(u);
+}
+function stopAudio() { if(synth.speaking) synth.cancel(); }
+
+function toggleTheme() {
+    const body = document.body;
+    body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+
+function updateStats() {
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    if (scoreDisplay) scoreDisplay.innerText = score;
+    if (score >= unlockScore && rewardGamesLeft === 0) {
+        unlockScore += 150; rewardGamesLeft = 3;
+        const rewardSection = document.getElementById('rewardSection');
+        if (rewardSection) rewardSection.style.display = 'block';
+        showToast("🎁 獎勵遊戲已解鎖！", "success");
+    }
+    const btn = document.querySelector('.reward-btn');
+    if(btn) btn.innerText = `🎁 獎勵時間！(剩餘 ${rewardGamesLeft} 次)`;
+    
+    if (rewardGamesLeft <= 0) {
+        const rewardSection = document.getElementById('rewardSection');
+        if (rewardSection) rewardSection.style.display = 'none';
+    }
+}
+
+function addScore(p) { score += p; updateStats(); }
+
+// --- Sentence Generator ---
+const irregularVerbs = { 'go':'went', 'see':'saw', 'eat':'ate', 'drink':'drank', 'buy':'bought', 'run':'ran', 'swim':'swam', 'write':'wrote', 'read':'read', 'come':'came' };
+const collocations = { 'homework': 'do homework', 'bus': 'take a bus', 'photo': 'take a photo', 'piano': 'play the piano', 'song': 'sing a song', 'bed': 'go to bed' };
+
+function makeSent(w) {
+    const wordLower = w.toLowerCase();
+    const isVowel = /^[aeiou]/i.test(w);
+    const article = isVowel ? "an" : "a";
+    
+    if (collocations[wordLower]) return `I like to ${collocations[wordLower]}.`;
+
+    const safeTemplates = [
+        `How do you spell "${w}"?`,
+        `The word is "${w}".`,
+        `Please write "${w}".`,
+        `Do you know "${w}"?`,
+        `We learned "${w}" today.`
+    ];
+
+    // Simple heuristic lists
+    const commonNouns = ['apple','banana','cat','dog','egg','fan','girl','hat','ice','jacket','kite','lion','monkey','nose','orange','pig','queen','rabbit','snake','tiger','umbrella','vest','watch','box','zoo','bird','book','pen','pencil','desk','chair','car','bus','park','school','teacher','student','father','mother','brother','sister','hand','foot','eye','ear','mouth'];
+    const commonVerbs = ['run','jump','swim','eat','drink','sleep','go','come','walk','fly','sing','dance','play','read','write','cook','wash','watch','listen','study','learn'];
+    const commonAdjs = ['good','bad','happy','sad','big','small','hot','cold','tall','short','long','fat','thin','hungry','thirsty','beautiful','cute','fast','slow','old','new','young'];
+
+    let specificTemplates = [];
+
+    if (commonNouns.includes(wordLower) || /(er|or|ist|tion|ment)$/.test(w)) { 
+        specificTemplates.push(`This is ${article} ${w}.`);
+        specificTemplates.push(`I see ${article} ${w}.`);
+        specificTemplates.push(`The ${w} is here.`);
+    } 
+    else if (commonVerbs.includes(wordLower) || /(ize|ify|ate)$/.test(w)) {
+        specificTemplates.push(`I like to ${w}.`);
+        specificTemplates.push(`Can you ${w}?`);
+        if(irregularVerbs[wordLower]) {
+            specificTemplates.push(`Yesterday I ${irregularVerbs[wordLower]}.`);
+        } else {
+            specificTemplates.push(`Let's ${w} together.`);
+        }
+    } 
+    else if (commonAdjs.includes(wordLower) || /(ful|ous|ive|ble)$/.test(w)) {
+        specificTemplates.push(`It is very ${w}.`);
+        specificTemplates.push(`She feels ${w}.`);
+        specificTemplates.push(`It looks ${w}.`);
+    }
+
+    if (specificTemplates.length > 0) {
+        const pool = [...specificTemplates, ...specificTemplates, ...safeTemplates];
+        return pool[Math.floor(Math.random() * pool.length)];
+    }
+    return safeTemplates[Math.floor(Math.random() * safeTemplates.length)];
+}
+
+// --- Navigation ---
+function goHome() {
+    stopAudio();
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('homeScreen').style.display = 'grid';
+}
+
+function startMode(id) {
+    stopAudio();
+    document.getElementById('homeScreen').style.display = 'none';
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id+'Screen').classList.add('active');
+    
+    // Init logic per screen
+    if(id==='practice') nextPractice();
+    if(id==='listen') initListen();
+    if(id==='speak') initSpeakSetup();
+    if(id==='scramble') initScramble();
+    if(id==='dict') initDict();
+    if(id==='mistake') initMistakeReview();
+}
+
+function changeLevel() {
+    currentLevel = parseInt(document.getElementById('levelSelect').value);
+    showToast(`切換至 Level ${currentLevel === 0 ? 'All' : currentLevel}`);
+    nextPractice();
+}
+
+function getFilteredVocab() {
+    if(currentLevel === 0) return vocabList;
+    return vocabList.filter(v => v.level === currentLevel);
+}
+
+// --- 1. Practice ---
+function nextPractice() {
+    let pool = getFilteredVocab();
+    if(pool.length === 0) pool = vocabList;
+    currWord = pool[Math.floor(Math.random()*pool.length)];
+    
+    document.getElementById('pWord').innerText = currWord.word;
+    document.getElementById('pHidden').style.display = 'none';
+    document.getElementById('pMean').innerText = currWord.mean;
+    document.getElementById('pSentence').innerText = currWord.sentence;
+}
+function togglePracticeCard() {
+    let el = document.getElementById('pHidden');
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    if(el.style.display === 'block') playTTS(currWord.word);
+}
+
+// --- 2. Listen ---
+function initListen() {
+    let pool = getFilteredVocab();
+    if(pool.length < 4) pool = vocabList;
+    
+    currWord = pool[Math.floor(Math.random()*pool.length)];
+    
+    let opts = [currWord];
+    while(opts.length<4) {
+        let r = pool[Math.floor(Math.random()*pool.length)];
+        if(!opts.includes(r)) opts.push(r);
+    }
+    opts.sort(()=>Math.random()-0.5);
+    
+    let div = document.getElementById('listenOptions');
+    div.innerHTML = "";
+    opts.forEach(o => {
+        let btn = document.createElement('button');
+        btn.className = 'btn btn-accent';
+        btn.style.width = '100%'; btn.style.height = '60px'; btn.style.fontSize = '1.1rem';
+        btn.innerText = o.mean;
+        btn.onclick = () => {
+            if(o.id === currWord.id) {
+                showToast("✅ 答對了！+10");
+                fireConfetti(); addScore(10);
+                setTimeout(initListen, 800);
+            } else {
+                showToast("❌ 錯誤，已加入錯題本", "error");
+                playTTS(currWord.word);
+                addMistake(currWord);
+            }
+        };
+        div.appendChild(btn);
+    });
+    setTimeout(()=>playTTS(currWord.word), 300);
+}
+
+// --- 3. Speak ---
+function initSpeechRecognition() {
+    if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        recognition.onstart = () => { isRecognizing = true; };
+        recognition.onend = () => { isRecognizing = false; };
+        recognition.onresult = (e) => checkSpeaking(e.results[0][0].transcript);
+    }
+}
+
+function initSpeakSetup() {
+    document.getElementById('micTestZone').style.display = 'flex';
+    document.getElementById('speakGameZone').style.display = 'none';
+    document.getElementById('micStatus').innerText = "...";
+    document.getElementById('btnStartSpeakGame').style.display = 'none';
+}
+
+function runMicTest() {
+    const status = document.getElementById('micStatus');
+    status.innerText = "請說話...";
+    
+    if(!recognition) {
+        initSpeechRecognition();
+        if(!recognition) { status.innerText = "❌ 瀏覽器不支援"; return; }
+    }
+    if(isRecognizing) return;
+
+    recognition.onresult = (e) => {
+        status.innerText = `OK: "${e.results[0][0].transcript}"`;
+        document.getElementById('btnStartSpeakGame').style.display = 'inline-block';
+        recognition.stop();
+    };
+    recognition.onerror = () => { status.innerText = "❌ 無法辨識"; };
+    try { recognition.start(); } catch(e) { recognition.stop(); }
+}
+
+function confirmMicTest() {
+    document.getElementById('micTestZone').style.display = 'none';
+    document.getElementById('speakGameZone').style.display = 'block';
+    initSpeak();
+}
+
+function initSpeak() {
+    let pool = getFilteredVocab();
+    currWord = pool[Math.floor(Math.random()*pool.length)];
+    document.getElementById('speakWord').innerText = currWord.word;
+    document.getElementById('speakMean').innerText = currWord.mean;
+    document.getElementById('speakResult').innerText = "...";
+    document.getElementById('speakFeedback').innerText = "";
+    
+    if(recognition) {
+        recognition.onresult = (e) => checkSpeaking(e.results[0][0].transcript);
+        recognition.onerror = () => { document.getElementById('speakFeedback').innerText = "❌ 錯誤"; };
+    }
+}
+
+function startRec(e) {
+    if(e) { e.preventDefault(); e.stopPropagation(); }
+    const btn = document.getElementById('btnSpeak');
+    if(recognition && !isRecognizing) {
+        try {
+            recognition.start();
+            btn.style.background = "#d63031"; btn.innerText = "👂 聆聽中...";
+        } catch(ex) {}
+    }
+}
+
+function stopRec(e) {
+    if(e) { e.preventDefault(); e.stopPropagation(); }
+    const btn = document.getElementById('btnSpeak');
+    setTimeout(() => {
+        if(recognition && isRecognizing) {
+            try {
+                recognition.stop();
+                btn.style.background = ""; btn.innerText = "🎙️ 按住說話";
+            } catch(ex) {}
+        }
+    }, 500);
+}
+
+function checkSpeaking(txt) {
+    let clean = txt.toLowerCase().trim();
+    document.getElementById('speakResult').innerText = clean;
+    if(clean.includes(currWord.word.toLowerCase())) {
+        showToast("✅ 發音正確！+10");
+        fireConfetti(); addScore(10);
+        setTimeout(initSpeak, 1500);
+    } else {
+        showToast("❌ 再試一次", "error");
+        addMistake(currWord);
+    }
+}
+
+// --- 4. Read ---
+function selectCategory(cat) {
+    document.getElementById('storyListArea').style.display = 'grid';
+    document.getElementById('readingArea').style.display = 'none';
+    let listDiv = document.getElementById('storyListArea'); listDiv.innerHTML = "";
+    
+    storyData[cat].forEach((story, index) => {
+        let btn = document.createElement('div');
+        btn.className = 'story-item';
+        btn.innerHTML = `<div><div style='font-weight:bold; font-size:1.1rem;'>${story.title}</div><div style='color:var(--text-light); font-size:0.9rem'>${story.desc}</div></div><div style='color:var(--primary); font-size:1.5rem'>➜</div>`;
+        btn.onclick = () => openStory(cat, index);
+        listDiv.appendChild(btn);
+    });
+}
+
+function openStory(cat, index) {
+    let story = storyData[cat][index];
+    document.getElementById('storyListArea').style.display = 'none';
+    document.getElementById('readingArea').style.display = 'block';
+    document.getElementById('articleTitle').innerText = story.title;
+    let html = "";
+    story.text.split(" ").forEach(w => {
+        let clean = w.replace(/[.,?!]/g, ""); 
+        html += `<span class="clickable" onclick="playTTS('${clean}')">${w} </span>`;
+    });
+    document.getElementById('articleContent').innerHTML = html;
+}
+
+function backToStoryList() {
+    stopAudio();
+    document.getElementById('readingArea').style.display = 'none';
+    document.getElementById('storyListArea').style.display = 'grid';
+}
+
+function readFullArticle() {
+    playTTS(document.getElementById('articleContent').innerText);
+}
+
+// --- 5. Scramble ---
+function initScramble() {
+    let pool = getFilteredVocab();
+    currWord = pool[Math.floor(Math.random()*pool.length)];
+    // Ensure complexity
+    while(currWord.sentence.split(" ").length < 3) {
+          currWord = pool[Math.floor(Math.random()*pool.length)];
+    }
+    
+    let sent = currWord.sentence.replace(/[.,?!]/g,""); 
+    let parts = sent.split(" ").sort(()=>Math.random()-0.5);
+    
+    document.getElementById('scrambleHint').innerText = `${currWord.word} (${currWord.mean})`;
+    document.getElementById('targetZone').innerHTML = "";
+    let src = document.getElementById('sourceZone'); src.innerHTML = "";
+    
+    parts.forEach((p,i) => {
+        let div = document.createElement('div');
+        div.className = 'word-tile';
+        div.innerText = p;
+        // Tap to move logic for mobile
+        div.onclick = function() {
+            if(this.parentElement.id === 'sourceZone') document.getElementById('targetZone').appendChild(this);
+            else document.getElementById('sourceZone').appendChild(this);
+        };
+        src.appendChild(div);
+    });
+}
+
+function resetScramble() {
+    let t = document.getElementById('targetZone');
+    let s = document.getElementById('sourceZone');
+    while(t.childNodes.length > 0) s.appendChild(t.childNodes[0]);
+}
+
+function checkScramble() {
+    let ans = Array.from(document.querySelectorAll('#targetZone .word-tile')).map(x=>x.innerText).join(" ");
+    let correct = currWord.sentence.replace(/[.,?!]/g,"");
+    if(ans === correct) {
+        showToast("✅ 句子正確！+15");
+        fireConfetti(); addScore(15); playTTS(currWord.sentence);
+        setTimeout(initScramble, 1500);
+    } else {
+        showToast("❌ 順序錯誤", "error");
+        addMistake(currWord);
+    }
+}
+
+// --- 6. Mistakes ---
+function addMistake(w) {
+    if(!mistakeList.some(m => m.id === w.id)) {
+        mistakeList.push(w);
+        updateMistakeBadge();
+        localStorage.setItem('mistakeList', JSON.stringify(mistakeList));
+    }
+}
+
+function updateMistakeBadge() {
+    const b = document.getElementById('mistakeBadge');
+    if (b) {
+        b.innerText = mistakeList.length;
+        b.style.display = mistakeList.length > 0 ? 'inline-block' : 'none';
+    }
+}
+
+function initMistakeReview() {
+    if(mistakeList.length === 0) {
+        document.getElementById('mistakeContent').innerHTML = "<h3 style='color:var(--text-light)'>太棒了！目前沒有錯題。</h3>";
+        return;
+    }
+    showMistakeCard(0);
+}
+
+function showMistakeCard(idx) {
+    if(idx >= mistakeList.length) idx = 0;
+    currMistakeIndex = idx;
+    const w = mistakeList[idx];
+    document.getElementById('mistakeContent').innerHTML = `
+        <div class="card-area" style="border-color:var(--error);">
+            <h1 style="color:var(--error); font-size:2.5rem;">${w.word}</h1>
+            <h2 style="color:var(--text);">${w.mean}</h2>
+            <p style="color:var(--text-light); margin-top:10px;">${w.sentence}</p>
+            <div style="margin-top:20px; color:var(--text-light); font-size:0.8rem;">(剩餘: ${mistakeList.length})</div>
+        </div>
+    `;
+    playTTS(w.word);
+}
+
+function nextMistake() {
+    if(mistakeList.length === 0) return;
+    showMistakeCard(currMistakeIndex + 1);
+}
+
+function playMistakeTTS() {
+    if(mistakeList.length > 0) playTTS(mistakeList[currMistakeIndex].word);
+}
+
+function removeMistake() {
+    if(mistakeList.length === 0) return;
+    mistakeList.splice(currMistakeIndex, 1);
+    updateMistakeBadge();
+    localStorage.setItem('mistakeList', JSON.stringify(mistakeList));
+    if(mistakeList.length === 0) initMistakeReview();
+    else showMistakeCard(currMistakeIndex);
+}
+
+// --- 0. Dict ---
+function initDict() {
+    document.getElementById('dictInput').value = "";
+    document.getElementById('dictList').innerHTML = "";
+}
+
+function initAlphaScroll() {
+    let c = document.getElementById('alphaFilters'); c.innerHTML = "";
+    for(let i=65; i<=90; i++) {
+        let btn = document.createElement('div');
+        btn.className = 'alpha-btn'; btn.innerText = String.fromCharCode(i);
+        btn.onclick = () => filterByLetter(btn.innerText, btn);
+        c.appendChild(btn);
+    }
+}
+
+function filterByLetter(char, btn) {
+    document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('dictInput').value = "";
+    let matches = vocabList.filter(v => v.word.toUpperCase().startsWith(char));
+    renderDict(matches);
+}
+
+function searchDict() {
+    document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+    let v = document.getElementById('dictInput').value.trim().toLowerCase();
+    if(!v) { document.getElementById('dictList').innerHTML=""; return; }
+    
+    // Improved search: Match English start OR Chinese inclusion
+    let matches = vocabList.filter(w => w.word.toLowerCase().startsWith(v) || w.mean.includes(v));
+    // If few results, verify contains for English too
+    if(matches.length < 5) {
+        let more = vocabList.filter(w => w.word.toLowerCase().includes(v) && !matches.includes(w));
+        matches = [...matches, ...more];
+    }
+    renderDict(matches, true);
+}
+
+function renderDict(matches, limit=false) {
+    let list = document.getElementById('dictList'); list.innerHTML = "";
+    if(matches.length===0) { list.innerHTML="<li style='padding:15px'>無結果</li>"; return; }
+    
+    let max = limit ? 50 : 200;
+    matches.slice(0, max).forEach(w => {
+        let li = document.createElement('li');
+        li.className = 'dict-item';
+        li.innerHTML = `<div><span class="dict-word">${w.word}</span> <span class="dict-mean">${w.mean}</span></div><button class="btn btn-main" style="padding:5px 12px; font-size:0.8rem" onclick="event.stopPropagation(); playTTS('${w.word}')">🔊</button>`;
+        li.onclick = () => playTTS(w.word);
+        list.appendChild(li);
+    });
+}
+
+// --- Games ---
+function openRandomGame() {
+    if(rewardGamesLeft <= 0) return;
+    document.getElementById('gameOverlay').style.display = 'flex';
+    let body = document.getElementById('gameBody'); body.innerHTML = "";
+    let type = Math.random() > 0.5 ? 'math' : 'memory';
+    if(type === 'math') setupMathGame(body);
+    else setupMemoryGame(body);
+}
+
+function closeGame() {
+    document.getElementById('gameOverlay').style.display = 'none';
+    rewardGamesLeft--; updateStats();
+}
+
+function setupMathGame(c) {
+    document.getElementById('gameTitle').innerText = "數學挑戰";
+    let n1 = Math.floor(Math.random()*10)+1, n2 = Math.floor(Math.random()*10)+1;
+    let map = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+    let ans = n1 + n2;
+    c.innerHTML = `<h2 style="margin-bottom:20px;">${map[n1]} + ${map[n2]} = ?</h2><div id="mOpts" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"></div>`;
+    let opts = [ans, ans+1, ans-1, ans+2].sort(()=>Math.random()-0.5).slice(0,4);
+    opts.forEach(o => {
+        let b = document.createElement('button'); b.className = 'btn btn-main'; b.innerText = map[o] || o;
+        b.onclick = () => {
+            if(o === ans) { showToast("✅ 正確！+30"); addScore(30); closeGame(); }
+            else showToast("❌ 錯誤", "error");
+        };
+        document.getElementById('mOpts').appendChild(b);
+    });
+}
+
+function setupMemoryGame(c) {
+    document.getElementById('gameTitle').innerText = "記憶翻牌";
+    let pool = [...vocabList].sort(()=>Math.random()-0.5).slice(0,4);
+    let cards = [];
+    pool.forEach(w => {
+        cards.push({ id: w.id, txt: w.word, type: 'en' });
+        cards.push({ id: w.id, txt: w.mean, type: 'ch' });
+    });
+    cards.sort(()=>Math.random()-0.5);
+    
+    let grid = document.createElement('div'); grid.className = 'memory-grid';
+    let first = null, lock = false, done = 0;
+    
+    cards.forEach(card => {
+        let el = document.createElement('div'); el.className = 'memory-card';
+        el.dataset.id = card.id;
+        el.innerHTML = `<span>${card.txt}</span>`;
+        el.querySelector('span').style.opacity = '0';
+        
+        el.onclick = function() {
+            if(lock || this === first || this.classList.contains('matched')) return;
+            this.classList.add('flipped');
+            this.querySelector('span').style.opacity = '1';
+            
+            if(!first) { first = this; return; }
+            
+            lock = true;
+            if(first.dataset.id === this.dataset.id) {
+                setTimeout(() => {
+                    first.classList.add('matched'); this.classList.add('matched');
+                    first = null; lock = false; done++;
+                    if(done === 4) { showToast("🏆 通關！+50"); addScore(50); closeGame(); }
+                }, 600);
+            } else {
+                setTimeout(() => {
+                    first.classList.remove('flipped'); first.querySelector('span').style.opacity = '0';
+                    this.classList.remove('flipped'); this.querySelector('span').style.opacity = '0';
+                    first = null; lock = false;
+                }, 1000);
+            }
+        };
+        grid.appendChild(el);
+    });
+    c.appendChild(grid);
+}
+
+// Confetti
+const ctx = document.getElementById('confettiCanvas').getContext('2d');
+let particles = [];
+function initConfetti() {
+    document.getElementById('confettiCanvas').width = window.innerWidth;
+    document.getElementById('confettiCanvas').height = window.innerHeight;
+    loopConfetti();
+}
+function fireConfetti() {
+    for(let i=0; i<40; i++) particles.push({
+        x: window.innerWidth/2, y: window.innerHeight/2,
+        vx: (Math.random()-0.5)*12, vy: (Math.random()-0.5)*12-5,
+        color: `hsl(${Math.random()*360},100%,50%)`, life: 80
+    });
+}
+function loopConfetti() {
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    particles.forEach((p,i) => {
+        p.x+=p.vx; p.y+=p.vy; p.vy+=0.3; p.life--;
+        ctx.fillStyle=p.color; ctx.fillRect(p.x, p.y, 8, 8);
+        if(p.life<=0) particles.splice(i,1);
+    });
+    requestAnimationFrame(loopConfetti);
+}
+</script>
+</body>
+</html>
